@@ -33,7 +33,6 @@ header nav a {
   justify-content: center;
   align-items: center;
   color: #2c3e50;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.6);
 }
 .hero h1 {
   font-size: 3rem;
@@ -57,7 +56,7 @@ header nav a {
 footer {
   background: #333;
   color: #eee;
-  text-align: center;
+  text-align: left;
   padding: 20px;
   margin-top: 60px;
 }
