@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OLIVE 문의하기</title>
+
+  <style>
+    * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    background: #f7f7f7;
+    padding: 40px;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+  }
+
+  h1 {
+    margin-bottom: 20px;
+  }
+
+  p {
+    color: #555;
+    line-height: 1.6;
+  }
+
+  form label {
+    display: block;
+    margin-top: 18px;
+    margin-bottom: 6px;
+    font-weight: bold;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  /* =========================
+     개인정보 동의 커스텀 UI
+     ========================= */
+
+  label.agree {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    font-size: 13px;
+    font-weight: normal;
+    cursor: pointer;
+  }
+
+  .agree-text {
+    color: #333;
+  }
+
+  /* 실제 체크박스 숨기기 */
+  label.agree input[type="checkbox"] {
+    display: none;
+  }
+
+  /* 커스텀 체크박스 */
+  .custom-checkbox {
+    margin-left: auto;
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 2px solid #ccc;
+    background: #fff;
+    position: relative;
+    transition: all 0.2s ease;
+  }
+
+  /* 체크 표시 */
+  .custom-checkbox::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    opacity: 0;
+  }
+
+  /* 체크된 상태 */
+  label.agree input:checked + .custom-checkbox {
+    background: #0a7d5c;
+    border-color: #0a7d5c;
+  }
+
+  label.agree input:checked + .custom-checkbox::after {
+    opacity: 1;
+  }
+
+  /* 포커스 (접근성) */
+  label.agree input:focus + .custom-checkbox {
+    box-shadow: 0 0 0 3px rgba(10, 125, 92, 0.2);
+  }
+
+  /* =========================
+     버튼
+     ========================= */
+
+  button {
+    margin-top: 20px;
+    padding: 14px;
+    width: 100%;
+    background: #0a7d5c;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  button:disabled {
+    background: #999;
+    cursor: not-allowed;
+  }
+
+  /* =========================
+     모바일 대응
+     ========================= */
+
+  @media (max-width: 768px) {
+    .container {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+</head>
+<body>
+
+  <div class="container">
+
+    <div>
+      <h1>서비스 제공업체에 문의하세요</h1>
+      <p>
+        DOIZ는 휴가용 주택을 공동으로 소유하고 이용할 수 있는 새로운 방식의
+        서비스입니다. 궁금한 점이 있으면 언제든지 문의해주세요.
+      </p>
+    </div>
+
+    <form id="contact-form">
+    <label>성명 *</label>
+    <input type="text" name="name" required>
+
+    <label>이메일 *</label>
+    <input type="email" name="email" required>
+
+    <label>전화 번호</label>
+    <input type="tel" name="phone">
+
+    <label>메시지 *</label>
+    <textarea name="message" required></textarea>
+
+    <label class="agree">
+    <span class="agree-text">개인정보 수집 및 이용에 동의합니다</span>
+    <input type="checkbox" required>
+    <span class="custom-checkbox"></span>
+  </label>
+
+    <button type="submit">메시지 보내기</button>
+  </form>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <script>
+    (function () {
+      emailjs.init("58AnW1E8qjEIVlJm3");
+    })();
+  </script>
+
+  <script>
+    const form = document.getElementById("contact-form");
+    const button = form.querySelector("button");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      button.disabled = true;
+      button.innerText = "전송 중...";
+
+      emailjs.sendForm(
+        "service_krzocj7",
+        "template_ts3ki2i",
+        this
+      ).then(() => {
+        alert("메시지가 성공적으로 전송되었습니다!");
+        form.reset();
+        button.disabled = false;
+        button.innerText = "메시지 보내기";
+      }, (error) => {
+        alert("전송 실패 😢 다시 시도해주세요.");
+        console.error(error);
+        button.disabled = false;
+        button.innerText = "메시지 보내기";
+      });
+    });
+  </script>
+
+</body>
+</html>
